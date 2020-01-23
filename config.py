@@ -8,7 +8,9 @@ load_dotenv(dotenv_path)
 
 
 class Config:
-    DATABASE_URI = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(
         user=getenv('DB_USERNAME'), pw=getenv('DB_PASSWORD'), url=getenv('DB_HOST'), db=getenv('DB_DATABASE')
     )
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 
