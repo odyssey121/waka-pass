@@ -1,10 +1,9 @@
 from flask import Flask
-from flask import request, Response
+from flask import request, Response, render_template
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 import base64
-import time
-from datetime import datetime
+from utils import make_delta, get_time, get_today
 
 app = Flask(__name__)
 
@@ -16,26 +15,37 @@ from models import User, Day, Payload
 
 
 @app.route('/test', methods=['POST'])
-def index():
+def api():
     token = request.headers.get('Authorization')
     content = request.json
     if token and token.startswith('Basic') and len(content):
-        payload = dict()
-        parse_token = base64.b64decode(token.split()[1]).decode('utf-8')
-        user = User.query.filter(User.api_key == parse_token).first()
-        if user:
-            if Payload.check_today(user.id):
-                print('make delta')
+        fetched_content = content.pop()
+        parsed_key = base64.b64decode(token.split()[1]).decode('utf-8')
+        user = User.get_user(parsed_key)
+        if user and fetched_content:
+            payload = dict()
+            payload['user_id'] = user.id
+            payload_for_today = Payload.check_today(user.id)
+            if payload_for_today:
+                start_time = payload_for_today.start_time
+                current_time = get_time(fetched_content['time'])
+                payload['running_hours'] = make_delta(start_time, current_time)
+                payload['date'] = get_today()
+                day = Day(**payload)
+                db.session.merge(day)
+                db.session.commit()
             else:
-                fetch_content = content.pop()
-                payload['start_time'] = time.strftime("%H:%M", time.localtime(fetch_content['time']))
-                payload['date'] = datetime.today().strftime('%Y-%m-%d')
-                payload['user_id'] = user.id
+                payload['start_time'] = get_time(fetched_content['time'])
                 db_payload = Payload(**payload)
                 db.session.add(db_payload)
                 db.session.commit()
-
     return Response(status='200')
+
+
+@app.route('/', methods=['GET'])
+def index():
+    users = User.query.all()
+    return render_template('index.html', users=users, token='token')
 
 
 if __name__ == '__main__':
