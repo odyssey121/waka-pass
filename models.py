@@ -74,9 +74,8 @@ class Day(db.Model):
         }
 
     @staticmethod
-    def by_month():
-        return Day.query.join(User). \
-            add_columns(User.name, User.last_name, User.api_key, Day.date, Day.running_min).all()
+    def days_by_user(last_name):
+        return Day.query.filter_by(user_last_name=last_name).all()
 
     @staticmethod
     def get_current_day(user_id):

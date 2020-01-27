@@ -14,25 +14,37 @@ db = SQLAlchemy(app)
 from models import User, Day, Payload, Month
 
 
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
+
 @app.route('/month', methods=['GET'])
 def month():
     return jsonify(data=[i.serialize for i in Month.query.all()])
 
 
-@app.route('/days', methods=['GET'])
-def day():
-    return jsonify(data=[i.serialize for i in Day.query.all()])
+@app.route('/days/<last_name>', methods=['GET'])
+def days(last_name):
+    user = User.query.filter_by(last_name = last_name).first()
+    if user:
+        return jsonify(data=[i.serialize for i in Day.days_by_user(user.last_name)])
+
+    return Response(status='400')
 
 
 @app.route('/user', methods=['POST'])
 def user():
     content = request.json
-    if User.query.filter_by(last_name=content.get('last_name')).first():
-        return Response(status='302',
-                        response="user with {} last_name already exist".format(content['last_name']))
+    user = User.query.filter_by(last_name=content.get('last_name')).first()
+    if user:
+        response = jsonify({'status': 302, 'message': f"Пользователь с фамилией {user.last_name} уже существует"})
+        response.status_code = 302
+        return response
     db.session.add(User(**content))
     db.session.commit()
-    return Response(status='201')
+    response = jsonify({'status': 201, 'message': "Created"})
+    response.status_code = 201
+    return response
 
 
 @app.route('/time', methods=['POST'])
@@ -52,7 +64,6 @@ def api():
                 last_time = payload_for_today.last_time
                 current_time = get_time(fetched_content['time'])
                 delta = hms_to_m(make_delta(last_time, current_time))
-                print(delta)
                 if delta > 15:
                     payload_for_today.last_time = get_time(fetched_content['time'])
                     db.session.commit()
