@@ -1,5 +1,3 @@
-
-
 .App {
   background-color: #282c34;
   min-height: 100vh;
@@ -7,15 +5,28 @@
   color: white;
 }
 
+.table-hat {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .5rem;
+}
+
 .container {
   width: 90%;
-  margin:auto;
+  margin: auto;
 }
+
+#update:hover {
+  cursor: pointer;
+  color: azure
+}
+
 #index-btn {
   justify-self: center;
 }
+
 .row {
-  padding-top:1.5rem;
+  padding-top: 1.5rem;
 }
 
 .user-form {
@@ -25,29 +36,35 @@
 .user-form .sm {
   height: 32px;
   width: 214px;
-  margin-right:1rem;
+  margin-right: 1rem;
 }
+
 .user-form .btn {
   height: 40px;
   line-height: 40px;
 }
-.user-form .btn > button {
+
+.user-form .btn>button {
   width: auto;
 }
+
 .user-form .md {
   height: 32px;
   width: 360px;
-  margin-right:1rem;
+  margin-right: 1rem;
 }
+
 /* TABLE */
+
 .ant-table table {
   background: whitesmoke;
 }
+
 @media (max-width: 1000px) {
   .user-form {
     flex-direction: column;
   }
   .user-form .btn {
-    margin-bottom:1.5rem;
+    margin-bottom: 1.5rem;
   }
 }

@@ -1,9 +1,4 @@
-import React, { useState, useEffect } from "react";
-import "./App.css";
-import TimeTable from "./component/TimeTable";
-import { Form, Input, Button, Icon, Typography } from "antd";
-import { allMonth } from "./component/mock";
-import { ConfirmBlue } from "./component/modal";
+import React from "react";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 import Month from "./component/month";
 import Day from "./component/day";
@@ -28,4 +23,4 @@ function App() {
   );
 }
 
-export default Form.create()(App);
+export default App;

@@ -1,7 +1,6 @@
 import React from "react";
-import { Icon, Table, Typography } from "antd";
+import { Icon, Table } from "antd";
 
-const { Text } = Typography;
 const placeholder = <Icon type="loading" style={{ fontSize: 44 }} spin />;
 
 const normTime = time => {
@@ -25,30 +24,30 @@ const TimeTable = ({ result, loading, history }) => {
         dataIndex: "date",
         key: "date",
         width: "30%",
-        render: date => <div>{date && date}</div>
-        // sorter: (a, b) => {
-        //   return a.title.localeCompare(b.title);
-        // }
+        render: date => <div>{date && date}</div>,
+        sorter: (a, b) => {
+          return a.date.localeCompare(b.date);
+        }
       },
       {
         title: "Фамилия",
         dataIndex: "last_name",
         key: "last_name",
         width: "40%",
-        render: last_name => <div>{last_name && last_name}</div>
-        // sorter: (a, b) => {
-        //   return a.content.localeCompare(b.content);
-        // }
+        render: last_name => <div>{last_name && last_name}</div>,
+        sorter: (a, b) => {
+          return a.last_name.localeCompare(b.last_name);
+        }
       },
       {
         title: "Время",
         dataIndex: "running_min",
         key: "running_min",
         width: "30%",
-        render: running_min => <div>{running_min && normTime(running_min)}</div>
-        // sorter: (a, b) => {
-        //   return a.date.localeCompare(b.date);
-        // }
+        render: running_min => <div>{running_min && normTime(running_min)}</div>,
+        sorter: (a, b) => {
+          return a.running_min.localeCompare(b.running_min);
+        }
       }
     ];
   };

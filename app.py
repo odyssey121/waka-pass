@@ -18,6 +18,7 @@ from models import User, Day, Payload, Month
 def index():
     return render_template('index.html')
 
+
 @app.route('/month', methods=['GET'])
 def month():
     return jsonify(data=[i.serialize for i in Month.query.all()])
@@ -25,7 +26,7 @@ def month():
 
 @app.route('/days/<last_name>', methods=['GET'])
 def days(last_name):
-    user = User.query.filter_by(last_name = last_name).first()
+    user = User.query.filter_by(last_name=last_name).first()
     if user:
         return jsonify(data=[i.serialize for i in Day.days_by_user(user.last_name)])
 
@@ -64,7 +65,7 @@ def api():
                 last_time = payload_for_today.last_time
                 current_time = get_time(fetched_content['time'])
                 delta = hms_to_m(make_delta(last_time, current_time))
-                if delta > 15:
+                if delta > 10:
                     payload_for_today.last_time = get_time(fetched_content['time'])
                     db.session.commit()
                     return Response(status='200')

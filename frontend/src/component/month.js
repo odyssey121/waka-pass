@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TimeTable from "./TimeTable";
 import { Form, Input, Button, Icon } from "antd";
-import { allMonth } from "./mock";
 import { ConfirmBlue, showSuccessModal } from "./modal";
 
 const config = (initialValue, required) => ({
@@ -29,8 +28,48 @@ const addUser = async values => {
     body: JSON.stringify(values)
   });
   const content = await rawResponse.json();
-  console.log(content)
-  console.log(rawResponse)
+  switch (content.status) {
+    case 201:
+      showSuccessModal({
+        title: "Успех!",
+        content: `Пользователь ${values["last_name"]}, успешно добавлен!`,
+        className: "vehicleSuccess",
+        okText: "Готово",
+        icon: "check",
+        closable: true,
+        maskClosable: true,
+        centered: true
+      });
+      break;
+
+    case 302:
+      showSuccessModal({
+        title: "Ошибка!",
+        content: content.message,
+        className: "vehicleSuccess vehicleSuccess_warning",
+        okText: "Готово",
+        icon: "warning",
+        closable: true,
+        maskClosable: true,
+        centered: true
+      });
+
+      break;
+
+    default:
+      showSuccessModal({
+        title: "Ошибка!",
+        content: content.message,
+        className: "vehicleSuccess vehicleSuccess_warning",
+        okText: "Готово",
+        icon: "warning",
+        closable: true,
+        maskClosable: true,
+        centered: true
+      });
+      break;
+  }
+
 };
 
 function Month({ form, ...rest }) {
@@ -39,17 +78,8 @@ function Month({ form, ...rest }) {
     form.validateFields((err, values) => {
       if (!err) {
         addUser(values);
-        // form.resetFields();
-        // showSuccessModal({
-        //   title: "Успех!",
-        //   content: `Пользователь ${values["last_name"]}, успешно добавлен!`,
-        //   className: "vehicleSuccess",
-        //   okText: "Готово",
-        //   icon: "check",
-        //   closable: true,
-        //   maskClosable: true,
-        //   centered: true
-        // });
+        form.resetFields();
+
       }
     });
   };
@@ -60,16 +90,10 @@ function Month({ form, ...rest }) {
 
   const getData = async () => {
     setLoading(true);
-    const rawResponse = fetch("/month", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    });
+    const rawResponse = await fetch("/month")
     const content = await rawResponse.json();
     setLoading(false);
-    console.log(content.body);
+    setResult(content.data)
   };
 
   useEffect(() => {
@@ -117,11 +141,15 @@ function Month({ form, ...rest }) {
           </Form>
         </div>
         <div>
-          <Icon type="idcard" />
-          <TimeTable result={allMonth.data} history={rest.history} />
+          <div className='table-hat'>
+            <Icon type="idcard" />
+            <Icon type="clock-circle" onClick={getData} id="update"/>
+          </div>
+
+          <TimeTable result={result} history={rest.history} loading={loading} />
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 
