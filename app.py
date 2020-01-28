@@ -40,11 +40,13 @@ def user():
     if user:
         response = jsonify({'status': 302, 'message': f"Пользователь с фамилией {user.last_name} уже существует"})
         response.status_code = 302
+        print('302')
         return response
     db.session.add(User(**content))
     db.session.commit()
     response = jsonify({'status': 201, 'message': "Created"})
     response.status_code = 201
+    print('201')
     return response
 
 
