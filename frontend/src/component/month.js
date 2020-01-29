@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import TimeTable from "./TimeTable";
-import { Form, Input, Button, Icon } from "antd";
+import { Form, Input, Button, Icon, Select } from "antd";
 import { ConfirmBlue, showSuccessModal } from "./modal";
+
+const { Option } = Select;
 
 const config = (initialValue, required) => ({
   initialValue,
@@ -69,7 +71,6 @@ const addUser = async values => {
       });
       break;
   }
-
 };
 
 function Month({ form, ...rest }) {
@@ -79,21 +80,37 @@ function Month({ form, ...rest }) {
       if (!err) {
         addUser(values);
         form.resetFields();
-
       }
     });
+  };
+
+  const getMonth = async values => {
+    setLoading(true);
+    const rawResponse = await fetch("/month_retrieve", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(values)
+    });
+    const content = await rawResponse.json();
+    setLoading(false);
+    setResult(content.data);
   };
 
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState([]);
   const [errors, setErrors] = useState(null);
 
+  const monthChange = e => getMonth({'month':e});
+
   const getData = async () => {
     setLoading(true);
-    const rawResponse = await fetch("/month")
+    const rawResponse = await fetch("/month");
     const content = await rawResponse.json();
     setLoading(false);
-    setResult(content.data)
+    setResult(content.data);
   };
 
   useEffect(() => {
@@ -141,15 +158,34 @@ function Month({ form, ...rest }) {
           </Form>
         </div>
         <div>
-          <div className='table-hat'>
-            <Icon type="idcard" />
-            <Icon type="clock-circle" onClick={getData} id="update"/>
+          <div className="table-hat">
+            <div>
+              <Icon type="idcard" />
+              <Select
+                className="select-month"
+                placeholder="месяца"
+                onChange={monthChange}
+              >
+                {result &&
+                  result
+                    .reduce(
+                      (acc, record) =>
+                        acc.includes(record.date) ? acc : [...acc, record.date],
+                      []
+                    )
+                    .map(record => (
+                      <Option value={record}>{record}</Option>
+                    ))}
+              </Select>
+            </div>
+
+            <Icon type="clock-circle" onClick={getData} id="update" />
           </div>
 
           <TimeTable result={result} history={rest.history} loading={loading} />
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 

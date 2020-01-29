@@ -55,6 +55,15 @@ class Month(db.Model):
         return Month.query.filter(Month.user_last_name == last_name,
                                   Month.date == datetime.today().strftime("%d/%m/%Y")[3:]).first()
 
+    @staticmethod
+    def get_available_month():
+        return list(set([m.date for m in Month.query.all()]))
+
+    @staticmethod
+    def get_retrieve_month(month):
+        return Month.query.filter_by(date=month).all()
+
+
 
 event.listen(Month, 'before_insert', generate_month)
 

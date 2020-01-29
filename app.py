@@ -24,6 +24,15 @@ def month():
     return jsonify(data=[i.serialize for i in Month.query.all()])
 
 
+@app.route('/month_retrieve/', methods=['POST'])
+def retrieve_month():
+    content = request.json
+    if content.get('month'):
+        return jsonify(data=[m.serialize for m in Month.get_retrieve_month(content.get('month'))])
+    return Response(status='404')
+
+# @app.route('/day_count/<last_name>', methods)
+
 @app.route('/days/<last_name>', methods=['GET'])
 def days(last_name):
     user = User.query.filter_by(last_name=last_name).first()
