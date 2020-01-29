@@ -40,13 +40,11 @@ def user():
     if user:
         response = jsonify({'status': 302, 'message': f"Пользователь с фамилией {user.last_name} уже существует"})
         response.status_code = 302
-        print('302')
         return response
     db.session.add(User(**content))
     db.session.commit()
     response = jsonify({'status': 201, 'message': "Created"})
     response.status_code = 201
-    print('201')
     return response
 
 
@@ -68,7 +66,7 @@ def api():
                 current_time = get_time(fetched_content['time'])
                 delta = hms_to_m(make_delta(last_time, current_time))
                 if delta > 10:
-                    payload_for_today.last_time = get_time(fetched_content['time'])
+                    payload_for_today.last_time = current_time
                     db.session.commit()
                     return Response(status='200')
                 current_day = Day.get_current_day(user.id)
@@ -78,13 +76,12 @@ def api():
                     payload['running_min'] = current_day.running_min + delta
                 else:
                     payload['running_min'] = delta
+                    db.session.add(Day(**payload))
                 if current_month:
                     current_month.running_min += delta
                 else:
-                    current_month = Month(**payload)
-                    db.session.add(current_month)
-                payload_for_today.last_time = get_time(fetched_content['time'])
-                db.session.merge(Day(**payload))
+                    db.session.add(Month(**payload))
+                payload_for_today.last_time = current_time
                 db.session.commit()
             else:
                 payload['last_time'] = get_time(fetched_content['time'])
