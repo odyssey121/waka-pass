@@ -9,7 +9,6 @@ const Days = props => {
     const rawResponse = await fetch(`/days/${last_name}`)
     const content = await rawResponse.json();
     setLoading(false);
-    console.log(content)
     setResult(content.data)
   };
 
