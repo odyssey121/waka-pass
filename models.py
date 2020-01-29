@@ -37,7 +37,8 @@ def generate_month(mapper, connection, target):
 
 class Month(db.Model):
     __tablename__ = 'months'
-    date = db.Column(db.String(12), primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    date = db.Column(db.String(12), nullable=False)
     user_last_name = db.Column(db.String, db.ForeignKey('users.last_name'))
     running_min = db.Column(db.Integer, default=0)
 
@@ -60,9 +61,9 @@ event.listen(Month, 'before_insert', generate_month)
 
 class Day(db.Model):
     __tablename__ = 'days'
-    date = db.Column(db.String(10), primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    date = db.Column(db.String(10), nullable=False)
     running_min = db.Column(db.Integer)
-    # min = db.Column(db.Integer)
     user_last_name = db.Column(db.String, db.ForeignKey('users.last_name'))
 
     @property
@@ -78,8 +79,8 @@ class Day(db.Model):
         return Day.query.filter_by(user_last_name=last_name).all()
 
     @staticmethod
-    def get_current_day(user_id):
-        return Day.query.filter(Day.date == datetime.today().strftime("%d/%m/%Y"), user_id == user_id).first()
+    def get_current_day(last_name):
+        return Day.query.filter(Day.date == datetime.today().strftime("%d/%m/%Y"), Day.user_last_name == last_name).first()
 
     def __repr__(self):
         return f"{self.date}"

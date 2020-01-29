@@ -69,21 +69,21 @@ def api():
                     payload_for_today.last_time = current_time
                     db.session.commit()
                     return Response(status='200')
-                current_day = Day.get_current_day(user.id)
+                current_day = Day.get_current_day(user.last_name)
                 payload['date'] = get_today()
                 payload['running_min'] = delta
 
                 if current_day:
                     current_day_running_min = current_day.running_min
                     current_day.running_min = current_day_running_min + delta
-                    db.session.commit()
+                    # db.session.commit()
                 else:
                     db.session.add(Day(**payload))
 
                 if current_month:
                     current_month_running_min = current_month.running_min
                     current_month.running_min = current_month_running_min + delta
-                    db.session.commit()
+                    # db.session.commit()
                 else:
                     db.session.add(Month(**payload))
 
