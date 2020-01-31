@@ -46,7 +46,11 @@ const TimeTable = ({ result, loading, history }) => {
         width: "30%",
         render: running_min => <div>{running_min && normTime(running_min)}</div>,
         sorter: (a, b) => {
+<<<<<<< HEAD
           return parseInt(a.running_min) - parseInt(b.running_min)
+=======
+          return a.running_min - b.running_min
+>>>>>>> f3254aa567f68294f2b656e2f550a8b7904acb2c
         }
       }
     ];
