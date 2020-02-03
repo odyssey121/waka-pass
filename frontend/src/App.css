@@ -26,7 +26,7 @@
 }
 
 .row {
-  padding-top: 1.5rem;
+  padding: 1rem;
 }
 
 .user-form {
@@ -59,7 +59,10 @@
 .ant-table table {
   background: whitesmoke;
 }
-
+#root > div > div > div > div:nth-child(2) > div.table-hat > div {
+  display: flex;
+  align-items: center;
+}
 .select-month {
   width: 128px;
   height: 32px;

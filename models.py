@@ -47,7 +47,7 @@ class Month(db.Model):
         return {
             'date': self.date,
             'last_name': self.user_last_name,
-            'running_min': self.running_min
+            'running_min': self.running_min,
         }
 
     @staticmethod
@@ -62,7 +62,6 @@ class Month(db.Model):
     @staticmethod
     def get_retrieve_month(month):
         return Month.query.filter_by(date=month).all()
-
 
 
 event.listen(Month, 'before_insert', generate_month)
@@ -85,11 +84,12 @@ class Day(db.Model):
 
     @staticmethod
     def days_by_user(last_name):
-        return Day.query.filter_by(user_last_name=last_name).all()
+        return Day.query.filter(Day.user_last_name == last_name).all()
 
     @staticmethod
     def get_current_day(last_name):
-        return Day.query.filter(Day.date == datetime.today().strftime("%d/%m/%Y"), Day.user_last_name == last_name).first()
+        return Day.query.filter(Day.date == datetime.today().strftime("%d/%m/%Y"),
+                                Day.user_last_name == last_name).first()
 
     def __repr__(self):
         return f"{self.date}"
