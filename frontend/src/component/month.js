@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import TimeTable from "./TimeTable";
 import { Form, Input, Button, Icon, Select } from "antd";
 import { ConfirmBlue, showSuccessModal } from "./modal";
+// import { fetchAll } from './mock';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -84,6 +86,23 @@ function Month({ form, ...rest }) {
     });
   };
 
+  const calculateDate = (retrieve) => {
+    if (!retrieve.days || !retrieve.month) {
+      alert('error in fetch api')
+      return
+    }
+    let scope_days = {};
+    const userArr = retrieve.month.reduce(
+      (acc, record) =>
+        acc.includes(record.last_name) ? acc : [...acc, record.last_name],
+      []
+    ).forEach(user => {
+      scope_days[user] = retrieve.days.filter(day => day.last_name == user)
+    })
+
+    return retrieve.month.map(record => ({ ...record, 'days': scope_days[record.last_name] }))
+  }
+
   const getMonth = async values => {
     setLoading(true);
     const rawResponse = await fetch("/month_retrieve", {
@@ -102,20 +121,25 @@ function Month({ form, ...rest }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState([]);
   const [errors, setErrors] = useState(null);
+  const [monthFilter, setMonthFilter] = useState(moment.utc().format("MM/YYYY").toString())
 
-  const monthChange = e => getMonth({'month':e});
+  // const monthChange = e => getMonth({ 'month': e });
 
   const getData = async () => {
     setLoading(true);
-    const rawResponse = await fetch("/month");
+    const rawResponse = await fetch("/fetch");
     const content = await rawResponse.json();
     setLoading(false);
-    setResult(content.data);
+    setResult(calculateDate(content));
   };
+
+
 
   useEffect(() => {
     getData();
   }, []);
+
+
 
   return (
     <div className="App">
@@ -164,7 +188,8 @@ function Month({ form, ...rest }) {
               <Select
                 className="select-month"
                 placeholder="месяца"
-                onChange={monthChange}
+                onChange={(e) => setMonthFilter(e)}
+                value={monthFilter}
               >
                 {result &&
                   result
@@ -174,15 +199,18 @@ function Month({ form, ...rest }) {
                       []
                     )
                     .map(record => (
-                      <Option value={record}>{record}</Option>
+                      <Option key={record} value={record}>{record}</Option>
                     ))}
               </Select>
             </div>
 
             <Icon type="clock-circle" onClick={getData} id="update" />
           </div>
-
-          <TimeTable result={result} history={rest.history} loading={loading} />
+          <TimeTable
+            result={result}
+            history={rest.history}
+            loading={loading}
+            monthFilter={monthFilter} />
         </div>
       </div>
     </div>

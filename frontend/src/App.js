@@ -14,7 +14,7 @@ function App() {
         <Switch>
           <Route
             exact
-            path="/detail/:last_name"
+            path="/detail/:last_name/:date/"
             render={props => <Day {...props} />}
           />
         </Switch>

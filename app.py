@@ -19,9 +19,9 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/month', methods=['GET'])
+@app.route('/fetch', methods=['GET'])
 def month():
-    return jsonify(data=[i.serialize for i in Month.query.all()])
+    return jsonify(month=[i.serialize for i in Month.query.all()], days=[i.serialize for i in Day.query.all()])
 
 
 @app.route('/month_retrieve/', methods=['POST'])
@@ -32,6 +32,12 @@ def retrieve_month():
     return Response(status='404')
 
 # @app.route('/day_count/<last_name>', methods)
+
+# @app.route('/days_all', methods=['GET'])
+# def days_all():
+#     return jsonify(data=[i.serialize for i in Day.query.all()])
+
+
 
 @app.route('/days/<last_name>', methods=['GET'])
 def days(last_name):
