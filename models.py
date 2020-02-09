@@ -1,6 +1,16 @@
 from app import db
 from sqlalchemy import event
 from datetime import datetime
+from werkzeug.security import safe_str_cmp
+from hashlib import md5
+import random
+import string
+
+
+# def randomString(stringLength=10):
+#     letters = string.ascii_lowercase
+#     word = ''.join(random.choice(letters) for i in range(stringLength)).encode('utf-8')
+#     return "https://robohash.org/{}?set=set4&bgset=&size=200x200".format(md5(word).hexdigest())
 
 
 def generate_date(mapper, connection, target):
@@ -13,14 +23,15 @@ class User(db.Model):
     name = db.Column(db.String(64))
     last_name = db.Column(db.String(64), unique=True, nullable=False)
     api_key = db.Column(db.String(128))
+    avatar = db.Column(db.String(256), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    @property
-    def serialize(self):
+    def serialize(self, token):
         return {
             'name': self.name,
             'last_name': self.last_name,
-            'api_key': self.api_key
+            'api_key': self.api_key,
+            'token': token
         }
 
     def __repr__(self):
@@ -91,6 +102,8 @@ class Day(db.Model):
         return Day.query.filter(Day.date == datetime.today().strftime("%d/%m/%Y"),
                                 Day.user_last_name == last_name).first()
 
+
+
     def __repr__(self):
         return f"{self.date}"
 
@@ -119,3 +132,14 @@ class Payload(db.Model):
 
 
 event.listen(Payload, 'before_insert', generate_date)
+
+
+def authenticate(last_name, api_key):
+    user = User.query.filter_by(last_name=last_name).first()
+    if user and safe_str_cmp(user.api_key.encode('utf-8'), api_key.encode('utf-8')):
+        return user
+
+
+def identity(payload):
+    user_id = payload['identity']
+    return User.query.get(user_id) if user_id else None

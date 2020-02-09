@@ -15,5 +15,10 @@ class Config:
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(root_dir, 'db.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = urandom(16)
+    JWT_AUTH_USERNAME_KEY = 'last_name'
+    JWT_AUTH_PASSWORD_KEY = 'api_key'
+    JWT_AUTH_URL_RULE = '/login'
+
+
 
 

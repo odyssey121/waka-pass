@@ -4,6 +4,7 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 import base64
 from utils import make_delta, get_time, get_today, hms_to_m
+from flask_jwt import JWT, jwt_required, current_identity
 
 app = Flask(__name__)
 
@@ -11,7 +12,15 @@ app.config.from_object(Config)
 
 db = SQLAlchemy(app)
 
-from models import User, Day, Payload, Month
+from models import User, Day, Payload, Month, authenticate, identity
+
+jwt = JWT(app, authenticate, identity)
+
+
+# @app.route('/login', methods=['GET'])
+# @jwt_required()
+# def protected():
+#     return '%s' % current_identity
 
 
 @app.route('/', methods=['GET'])
@@ -31,12 +40,12 @@ def retrieve_month():
         return jsonify(data=[m.serialize for m in Month.get_retrieve_month(content.get('month'))])
     return Response(status='404')
 
+
 # @app.route('/day_count/<last_name>', methods)
 
 # @app.route('/days_all', methods=['GET'])
 # def days_all():
 #     return jsonify(data=[i.serialize for i in Day.query.all()])
-
 
 
 @app.route('/days/<last_name>', methods=['GET'])
@@ -93,14 +102,12 @@ def api():
                 if current_day:
                     current_day_running_min = current_day.running_min
                     current_day.running_min = current_day_running_min + delta
-                    # db.session.commit()
                 else:
                     db.session.add(Day(**payload))
 
                 if current_month:
                     current_month_running_min = current_month.running_min
                     current_month.running_min = current_month_running_min + delta
-                    # db.session.commit()
                 else:
                     db.session.add(Month(**payload))
 
@@ -111,6 +118,25 @@ def api():
                 db.session.add(Payload(**payload))
                 db.session.commit()
     return Response(status='200')
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('index.html')
+
+@app.errorhandler(405)
+def page_not_found(e):
+    return render_template('index.html')
+
+
+@jwt.auth_response_handler
+def cstm_response(token, indentity):
+    print(Day.query.filter(Day.user_last_name == indentity.last_name).all())
+    if not Day.query.filter(Day.user_last_name == indentity.last_name).all():
+        return jsonify({'message': "К сожалению вы не можете войти в систему - т.к вы еще не наработали и минуты"}), 406
+    return jsonify({
+        'user': indentity.serialize(token.decode('utf-8'))
+    })
 
 
 if __name__ == '__main__':

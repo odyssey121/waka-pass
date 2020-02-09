@@ -1,8 +1,17 @@
+
+
 .App {
   background-color: #282c34;
-  min-height: 100vh;
+  display: table;
+  height: 100%;
   font-size: calc(10px + 2vmin);
   color: white;
+  width: 100%;
+}
+
+.App>div {
+  display: table-cell;
+  vertical-align: top;
 }
 
 .table-hat {
@@ -11,9 +20,10 @@
   margin-bottom: .5rem;
 }
 
-.container {
+#mainSheet {
   width: 90%;
   margin: auto;
+  height: 100vh;
 }
 
 #update:hover {
@@ -33,7 +43,7 @@
   display: flex;
 }
 
-.user-form .sm {
+.sm {
   height: 32px;
   width: 214px;
   margin-right: 1rem;
@@ -48,7 +58,7 @@
   width: auto;
 }
 
-.user-form .md {
+.md {
   height: 32px;
   width: 360px;
   margin-right: 1rem;
@@ -56,13 +66,33 @@
 
 /* TABLE */
 
+.Table-wrapper {
+  position: relative;
+}
+
+.csv-area>a>i>svg {
+  color: #fff;
+}
+
+.csv-area {
+  position: absolute;
+  left: 0;
+  bottom: 3.5%;
+}
+
 .ant-table table {
   background: whitesmoke;
 }
-#root > div > div > div > div:nth-child(2) > div.table-hat > div {
+
+#root>div>div>div>div:nth-child(2)>div.table-hat>div {
   display: flex;
   align-items: center;
 }
+
+.csvLink {
+  display: hidden;
+}
+
 .select-month {
   width: 128px;
   height: 32px;

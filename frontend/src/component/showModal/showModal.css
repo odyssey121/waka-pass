@@ -1,0 +1,75 @@
+.cardVehiclShowBtn {
+    width: 176px;
+    height: 32px;
+    border: 1px solid #00a8ff;
+    color: #00a8ff;
+}
+
+.register-window {
+    height: 50%;
+}
+
+.register-window .ant-modal-content {
+    background: #f0f2f5;
+    height: 100%;
+}
+
+.register-window .ant-modal-body {
+    background: #f0f2f5;
+    height: 75%;
+}
+
+.register-window p {
+    color: #323232
+}
+
+.register-window .ant-modal-header {
+    background: #f0f2f5;
+}
+
+.register-window .ant-modal-title {
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.8px;
+}
+
+.register-window .ant-modal-footer {
+    background: #f0f2f5;
+    position: relative;
+    bottom: 0;
+}
+
+.register-window .ant-modal-footer>div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.register-window .ant-modal-footer>div>button:first-child {
+    /* visibility: hidden; */
+    width: 176px;
+    height: 32px;
+}
+
+.register-window .ant-modal-footer>div>button:last-child {
+    width: 176px;
+    height: 32px;
+}
+.register-form .ant-form-item {
+    display: flex;
+}
+.register-form .ant-form-item-label {
+    width: 80px;
+    margin-right: 16px;
+}
+
+.register-form  svg {
+    vertical-align: middle;
+    margin-bottom: 4px;
+    
+}
+
+.register-form .about-input {
+
+}
+
+
