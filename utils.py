@@ -22,4 +22,3 @@ get_time = lambda t: time.strftime("%H:%M", time.localtime(t))
 
 get_today = lambda: datetime.today().strftime("%d/%m/%Y")
 
-# print(get_today()[3:])

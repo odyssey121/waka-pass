@@ -1,0 +1,18 @@
+#notFoundPage {
+	height: 100vh;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
+	width: 400px;
+}
+
+#notFoundPage .errorCaption {
+	color: #00a8ff;
+}
+
+#notFoundPage .errorText {
+	color: #fff;
+}

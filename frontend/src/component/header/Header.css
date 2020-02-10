@@ -1,0 +1,79 @@
+#header {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    display: table;
+    z-index: 100;
+    transition: all 0.3s ease-in-out;
+    height: 64px;
+}
+
+#header .header-row {
+    height: 64px;
+    box-shadow: 0 1px 4px 0 rgba(0, 21, 41, 0.12);
+    background: #f0f2f5;
+}
+
+#header .header-row .header-row-container {
+    margin: 0 auto;
+    width: 90%;
+    display: flex;
+}
+
+#header>div>div>div:nth-child(3) {
+    padding: 0 16px;
+}
+
+#header .header-row .header-row-container>.item-cell {
+    width: 33%;
+    height: 64px;
+    line-height: 60px;
+}
+
+#header>div>div>div:nth-child(1)>a>span {
+    margin-left: 16px;
+}
+
+#header .ant-divider-vertical {
+    width: 2px;
+    margin: 8px;
+    height: 48px;
+}
+
+#header .header-row .header-row-container>.item-cell .user-area {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    align-items: center;
+    grid-gap: 0 16px;
+    justify-content: end;
+}
+
+#header .header-row .header-row-container>.item-cell .user-area .ant-typography-secondary {
+    font-size: 14px;
+    user-select: none;
+}
+
+#header .header-row .header-row-container>.info-cell {
+    text-align: center;
+}
+
+#header>div>div>div.item-cell.info-cell>i>svg, #header>div>div>div:nth-child(5)>div>i>svg {
+    color: #1890ff;
+}
+
+
+#header>div>div>div:nth-child(5)>div>a {
+    display: flex;
+    align-items: center;
+}
+
+#header>div>div>div:nth-child(5)>div>i>svg {
+    height: 22px;
+    width: 22px;
+    color: #1890ff;
+}
+#header>div>div>div:nth-child(5)>div>i>svg:hover{
+    cursor: pointer;
+    color:red;
+}

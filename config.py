@@ -2,6 +2,7 @@ from os import getenv
 from os.path import dirname, join
 from dotenv import load_dotenv
 from os import urandom
+from datetime import timedelta
 
 root_dir = dirname(__file__)
 dotenv_path = join(root_dir, '.env')
@@ -15,5 +16,13 @@ class Config:
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(root_dir, 'db.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = urandom(16)
+    JWT_AUTH_USERNAME_KEY = 'last_name'
+    JWT_AUTH_PASSWORD_KEY = 'api_key'
+    JWT_AUTH_URL_RULE = '/identity'
+    JWT_ACCESS_TOKEN_EXPIRES = 2592000
+    JWT_EXPIRATION_DELTA = timedelta(seconds=2592000)
+
+
+
 
 

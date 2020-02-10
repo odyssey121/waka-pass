@@ -1,0 +1,60 @@
+#login {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+
+#api_key {
+    width: 300px;
+}
+.popover:hover{
+    cursor: pointer;
+}
+.popover {
+    align-self: center;
+}
+#login > form > h1 > i {
+    margin-left:3%;
+}
+#create-user {
+    margin-top: 1rem;
+}
+
+#login .login-form>h1 {
+    color: #fff;
+}
+
+#login .login-form {
+    height: 124px;
+    width: 374px;
+    align-self: center;
+    margin-top: -10%;
+}
+
+#login>form>div:nth-child(2) {
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-gap: 16px;
+    grid-auto-rows: 32px;
+}
+
+#login .login-form .login-area {
+    display: grid;
+    grid-template-columns: 198px max-content;
+    grid-gap: 16px;
+    grid-auto-rows: 32px;
+}
+
+#login .login-form .ant-form-item-control {
+    line-height: 32px;
+}
+
+#login .login-form .login-area .login-btn {
+    align-self: center;
+    width: 124px;
+}
+
+#login .login-form .login-area .login-btn>button {
+    width: 100%;
+}
