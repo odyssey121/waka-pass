@@ -6,6 +6,7 @@ import Days from "./component/day";
 import Login from "./component/auth";
 import Header from "./component/header";
 import { connect } from "react-redux";
+// import { Icon } from "antd";
 import { restoreProfile } from "./component/auth/redux/actions";
 import "./App.css";
 

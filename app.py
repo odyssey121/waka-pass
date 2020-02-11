@@ -70,9 +70,10 @@ def user():
         response = jsonify({'status': 302, 'message': f"Пользователь с фамилией {user.last_name} уже существует"})
         response.status_code = 302
         return response
+    db.session.add(User(**content))
+    db.session.commit()
     new_month = Month(date=get_today(), user_last_name=content['last_name'])
     db.session.add(new_month)
-    db.session.add(User(**content))
     db.session.commit()
     response = jsonify({'status': 201, 'message': "Created"})
     response.status_code = 201
@@ -137,7 +138,7 @@ def page_not_found(e):
 
 @jwt.auth_response_handler
 def cstm_response(token, indentity):
-    if not Day.query.filter(Day.user_last_name == indentity.last_name).all():
+    if not Day.query.filter(Day.user_last_name == indentity.last_name).all() and not indentity.isAdmin:
         return jsonify({'message': "К сожалению вы не можете войти в систему - т.к вы еще не наработали и минуты"}), 406
     return jsonify({
         'user': indentity.serialize(token.decode('utf-8'))

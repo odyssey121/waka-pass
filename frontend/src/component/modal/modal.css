@@ -145,6 +145,6 @@
     height: 0;
 }
 
-.vehicleSuccess_warning .anticon svg {
-    color: #f5222d !important;
+.vehicleSuccess_warning .ant-modal-confirm-body>i>svg {
+    color: red !important;
 }

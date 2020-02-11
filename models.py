@@ -23,7 +23,7 @@ class User(db.Model):
     name = db.Column(db.String(64))
     last_name = db.Column(db.String(64), unique=True, nullable=False)
     api_key = db.Column(db.String(128))
-    avatar = db.Column(db.String(256), nullable=True)
+    isAdmin = db.Column(db.Boolean, nullable=True, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def serialize(self, token):
@@ -31,7 +31,8 @@ class User(db.Model):
             'name': self.name,
             'last_name': self.last_name,
             'api_key': self.api_key,
-            'token': token
+            'token': token,
+            'omnipotent': self.isAdmin,
         }
 
     def __repr__(self):

@@ -1,21 +1,29 @@
 #login {
     display: flex;
     justify-content: center;
-    height: 100vh;
+    height: 100%;
 }
 
 #api_key {
     width: 300px;
 }
-.popover:hover{
+
+.inactive {
+    color: rgba(0, 0, 0, .65);
+}
+
+.popover:hover {
     cursor: pointer;
 }
+
 .popover {
     align-self: center;
 }
-#login > form > h1 > i {
-    margin-left:3%;
+
+#login>form>h1>i {
+    margin-left: 3%;
 }
+
 #create-user {
     margin-top: 1rem;
 }

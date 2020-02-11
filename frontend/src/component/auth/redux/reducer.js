@@ -9,12 +9,16 @@ const user = handleActions(
     },
     [authAction.resetUser]: () => null
   },
-  {}
+  null
 );
 
 const detail = handleActions(
   {
-    [authAction.login]: (state, _payload) => ({ ...state, loading: true }),
+    [authAction.login]: (state, _payload) => ({
+      ...state,
+      loading: true,
+      error: null
+    }),
     [authAction.loginSuccess]: (state, { payload }) => ({
       status: "SUCCESS",
       loading: false

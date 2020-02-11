@@ -21,12 +21,12 @@ function* loginSaga(action) {
   const { payload } = action;
   const response = yield call(loginRequest, payload);
   if (response.status === 200) {
-    yield put(loginSuccess());
     const data = yield call([response, "json"]);
     const { token } = data.user;
     const { user } = data;
-    localStorage.setItem("wakav1.0-token", token);
     yield put(setUser(user));
+    localStorage.setItem("wakav1.0-token", token);
+    yield put(loginSuccess());
   } else {
     yield put(loginFailure(responseMessage[response.status]));
   }
@@ -44,8 +44,8 @@ function* restoreProfileSaga(_action) {
     const data = yield call([response, "json"]);
     const { user } = data;
     if (user) {
-      yield put(restoreProfileSuccess());
       yield put(setUser(user));
+      yield put(restoreProfileSuccess());
     } else if (data.error) {
       localStorage.removeItem("wakav1.0-token");
       yield put(restoreProfileFailure(data.error));
