@@ -2,15 +2,7 @@ from app import db
 from sqlalchemy import event
 from datetime import datetime
 from werkzeug.security import safe_str_cmp
-from hashlib import md5
-import random
-import string
-
-
-# def randomString(stringLength=10):
-#     letters = string.ascii_lowercase
-#     word = ''.join(random.choice(letters) for i in range(stringLength)).encode('utf-8')
-#     return "https://robohash.org/{}?set=set4&bgset=&size=200x200".format(md5(word).hexdigest())
+from passlib.hash import pbkdf2_sha256 as sha256
 
 
 def generate_date(mapper, connection, target):
@@ -26,17 +18,20 @@ class User(db.Model):
     isAdmin = db.Column(db.Boolean, nullable=True, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def serialize(self, token):
+    def serialize(self, token=None):
         return {
+            'id': self.id,
             'name': self.name,
             'last_name': self.last_name,
-            'api_key': self.api_key,
             'token': token,
             'omnipotent': self.isAdmin,
         }
 
     def __repr__(self):
         return f"{self.name} api-key {self.api_key}"
+
+    def check_hash(self, hash):
+        return sha256.verify(self.api_key, hash)
 
     @staticmethod
     def get_user(api_key):
@@ -103,18 +98,9 @@ class Day(db.Model):
         return Day.query.filter(Day.date == datetime.today().strftime("%d/%m/%Y"),
                                 Day.user_last_name == last_name).first()
 
-
-
     def __repr__(self):
         return f"{self.date}"
 
-
-# event.listen(Day, 'before_insert', generate_date)
-
-# class Language(db.Model):
-#     __tablename__ = 'languages'
-#     id = db.Column(db.Integer, primary_key=True, nullable=False)
-#     name = db.Column(db.String(64))
 
 class Payload(db.Model):
     __tablename__ = 'payloads'

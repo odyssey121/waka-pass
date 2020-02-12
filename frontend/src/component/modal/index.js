@@ -1,1 +1,1 @@
-export {ConfirmBlue,showSuccessModal} from './modal';
+export { ConfirmBlue, showSuccessModal } from "./modal";

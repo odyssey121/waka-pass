@@ -13,8 +13,8 @@ import {
 } from "./actions";
 
 const responseMessage = {
-  401: "неверный логин или api-key",
-  406: "к сожалению вы не можете войти в систему - т.к вы еще не наработали и минуты"
+  401: "Неверный логин или api-key",
+  406: "К сожалению вы не можете войти в систему - т.к вы еще не наработали и минуты"
 };
 
 function* loginSaga(action) {
@@ -25,7 +25,7 @@ function* loginSaga(action) {
     const { token } = data.user;
     const { user } = data;
     yield put(setUser(user));
-    localStorage.setItem("wakav1.0-token", token);
+    localStorage.setItem("wakav1.0-token", `${user.id} ${token}`);
     yield put(loginSuccess());
   } else {
     yield put(loginFailure(responseMessage[response.status]));

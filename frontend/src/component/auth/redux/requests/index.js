@@ -1,5 +1,5 @@
 export const loginRequest = values =>
-  fetch("/identity", {
+  fetch("/login", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -8,12 +8,12 @@ export const loginRequest = values =>
     body: JSON.stringify(values)
   }).then(response => response);
 
-export const profileRequest = token =>
-  fetch("/identity", {
+export const profileRequest = (token) =>
+  fetch("/retrieve", {
     method: "GET",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: `JWT ${token}`
+      Authorization: `${token}`
     }
   }).then(response => response);

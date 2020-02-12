@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 import base64
 from utils import make_delta, get_time, get_today, hms_to_m
 from flask_jwt import JWT, jwt_required, current_identity
+from passlib.hash import pbkdf2_sha256 as sha256
 
 app = Flask(__name__)
 
@@ -26,6 +27,30 @@ def protected():
         return jsonify({
             'user': current_identity.serialize(token)
         })
+
+
+@app.route('/login', methods=["POST"])
+def login():
+    content = request.json
+    user = User.get_user(content.get('api_key'))
+    if user and content.get('last_name') == user.last_name:
+        return jsonify({
+            'user': user.serialize(sha256.hash(user.api_key))
+        })
+    return jsonify({'error': "Неверный ключ или Фамилия входа"}), 401
+
+
+@app.route('/retrieve', methods=["GET"])
+def retrieve():
+    data = request.headers.get('Authorization')
+    if data and len(data.split(" ")) == 2:
+        ids, hash = data.split(" ")
+        user = User.query.get(ids)
+        if user and user.check_hash(hash):
+            return jsonify({
+                'user': user.serialize(hash)
+            })
+    return jsonify({'error': "Неверный токен"}), 401
 
 
 @app.route('/', methods=['GET'])

@@ -61,7 +61,7 @@ const Header = ({ logout, ...rest }) => {
                   <div>
                     <Text style={{ "font-size": "18px" }} type="strong">
                       Ваша роль:
-                      {rest.user.omnipotent ? "Администратор" : "Разработчик"}
+                      {rest.user.omnipotent ? " Администратор" : " Разработчик"}
                     </Text>
                   </div>
                 }
@@ -78,7 +78,10 @@ const Header = ({ logout, ...rest }) => {
               <div className="user-area">
                 <Avatar icon={<Icon type="user" />} />
                 <Text style={{ "font-size": "18px" }} type="strong">
-                  {rest.user && rest.user.last_name}
+                  {rest.user &&
+                    `${rest.user.last_name}. ${(rest.user.name &&
+                      rest.user.name.slice(0, 1).toUpperCase()) ||
+                      ""}.`}
                 </Text>
                 <Icon type="logout" onClick={logout} />
               </div>
