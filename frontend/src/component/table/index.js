@@ -19,6 +19,9 @@ const normTime = time => {
   return newTime;
 };
 
+const reversToMin = string => string.length > 4 && string.split(" ")[0] * 60 + string.split(" ")[2]
+
+
 const headers = [
   { label: "Дата", key: "date" },
   { label: "Фамилия", key: "last_name" },
@@ -98,7 +101,7 @@ const TimeTable = ({ result, loading, history, monthFilter, daysFilter }) => {
         width: "10%",
         render: running_min => <div>{running_min && running_min}</div>,
         sorter: (a, b) => {
-          return b.running_min.localeCompare(a.running_min);
+          return reversToMin(b.running_min) - reversToMin(a.running_min);
         }
       }
     ];

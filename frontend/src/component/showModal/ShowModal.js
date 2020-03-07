@@ -139,9 +139,9 @@ class ShowModal extends React.PureComponent {
                   {content}
                 </QuestionPopover>
               </Form.Item>
-              <Form.Item label="О себе">
+              {/* <Form.Item label="О себе">
                 <TextArea rows={3} className="about-input" cols={43} />
-              </Form.Item>
+              </Form.Item> */}
             </Form>
           </div>
         </Modal>

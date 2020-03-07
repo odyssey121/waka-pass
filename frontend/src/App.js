@@ -44,7 +44,13 @@ function App({ restoreProfile, restoring, profile, ...rest }) {
               exact
               path="/login"
               render={props =>
-                (profile && <Redirect to="/" />) || <Login {...props} />
+                profile ? (
+                  <Redirect to="/" />
+                ) : restoring == "IDLE" ? (
+                  <Loader />
+                ) : (
+                  <Login {...props} />
+                )
               }
             />
 

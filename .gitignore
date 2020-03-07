@@ -2,6 +2,7 @@
 .env
 /__pycache__
 .idea
+.vscode
 /migrations
 frontend/node_modules/
 

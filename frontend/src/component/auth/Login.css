@@ -2,6 +2,7 @@
     display: flex;
     justify-content: center;
     height: 100%;
+    margin-top: 22%;
 }
 
 #api_key {
@@ -33,10 +34,7 @@
 }
 
 #login .login-form {
-    height: 124px;
-    width: 374px;
     align-self: center;
-    margin-top: -10%;
 }
 
 #login>form>div:nth-child(2) {

@@ -71,7 +71,7 @@ function Month({ form, authStatus, user, ...rest }) {
   }, []);
 
   return (
-    <div className="App">
+    <div className="month-app">
       <div className="row">
         <div>
           <div className="table-hat">
